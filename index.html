@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#FDF6F0">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>Rewind — Find someone who watches like you</title>
+<meta name="description" content="Rewind matches you with people who like the same YouTube videos. It's dating, but based on what you actually care about.">
+
+<meta property="og:title" content="Rewind — Finally, a dating app that gets you">
+<meta property="og:description" content="We match you based on your YouTube likes. No more awkward bios. Just real compatibility.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://rewind.dating">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #FDF6F0;
+    --bg-warm: #F9EDE4;
+    --accent: #C2185B;
+    --accent-soft: #D4637A;
+    --accent-bg: rgba(194, 24, 91, 0.06);
+    --accent-border: rgba(194, 24, 91, 0.12);
+    --text: #2D1F2B;
+    --text-secondary: #5C4A58;
+    --text-light: #9A8896;
+    --card-bg: #FFFFFF;
+    --card-border: rgba(80,40,60,0.06);
+    --card-shadow: 0 2px 16px rgba(80,40,60,0.05);
+    --green: #7B8F6A;
+    --purple: #7E5A7E;
+    --orange: #C4956A;
+    --blue: #6A8FA8;
+    --rose: #E8B4B8;
+    --gold: #D4A76A;
+    --burgundy: #6B2D4A;
+    --display: 'Instrument Serif', Georgia, serif;
+    --body: 'Bricolage Grotesque', system-ui, sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--body);
+    -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: transparent;
+    overflow-x: hidden;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pop {
+    0% { transform: scale(0.8); opacity: 0; }
+    60% { transform: scale(1.05); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  @keyframes float-slow {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  .f { animation: fadeUp 0.6s ease both; }
+  .f1 { animation-delay: 0.05s; }
+  .f2 { animation-delay: 0.1s; }
+  .f3 { animation-delay: 0.18s; }
+  .f4 { animation-delay: 0.26s; }
+  .f5 { animation-delay: 0.34s; }
+  .f6 { animation-delay: 0.42s; }
+
+  /* ═══ HERO ═══ */
+  .hero {
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1.5rem 2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    pointer-events: none;
+    opacity: 0.5;
+  }
+  .blob-1 {
+    width: 300px; height: 300px;
+    top: -80px; right: -60px;
+    background: radial-gradient(circle, rgba(194,24,91,0.1) 0%, transparent 70%);
+  }
+  .blob-2 {
+    width: 250px; height: 250px;
+    bottom: 40px; left: -80px;
+    background: radial-gradient(circle, rgba(212,167,106,0.12) 0%, transparent 70%);
+  }
+  .blob-3 {
+    width: 200px; height: 200px;
+    top: 30%; left: 60%;
+    background: radial-gradient(circle, rgba(232,180,184,0.15) 0%, transparent 70%);
+  }
+
+  .logo {
+    width: 64px; height: 64px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #C2185B, #D4637A);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 30px;
+    margin-bottom: 1.25rem;
+    box-shadow: 0 8px 28px rgba(194,24,91,0.2);
+    animation: pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+
+  .hero h1 {
+    font-family: var(--display);
+    font-size: 2.5rem;
+    font-weight: 400;
+    font-style: italic;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.75rem;
+    color: var(--text);
+  }
+  .hero h1 em {
+    font-style: italic;
+    background: linear-gradient(135deg, #C2185B, #7E5A7E);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .hero .tagline {
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    line-height: 1.55;
+    max-width: 310px;
+    margin: 0 auto 1.75rem;
+    font-weight: 400;
+  }
+
+  .form-wrap {
+    width: 100%;
+    max-width: 340px;
+    margin-bottom: 1.25rem;
+  }
+
+  .email-input {
+    width: 100%;
+    padding: 15px 18px;
+    background: var(--card-bg);
+    border: 1.5px solid var(--card-border);
+    border-radius: 14px;
+    color: var(--text);
+    font-family: var(--body);
+    font-size: 16px;
+    outline: none;
+    transition: border 0.3s, box-shadow 0.3s;
+    margin-bottom: 10px;
+    -webkit-appearance: none;
+    box-shadow: var(--card-shadow);
+  }
+  .email-input:focus {
+    border-color: var(--accent-soft);
+    box-shadow: 0 0 0 3px rgba(194,24,91,0.08);
+  }
+  .email-input::placeholder { color: var(--text-light); }
+
+  .cta-btn {
+    width: 100%;
+    padding: 16px;
+    border: none;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #C2185B, #D4637A);
+    color: white;
+    font-family: var(--body);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    box-shadow: 0 6px 24px rgba(194,24,91,0.2);
+    -webkit-appearance: none;
+    min-height: 52px;
+    letter-spacing: 0.01em;
+  }
+  .cta-btn:active { transform: scale(0.97); }
+
+  .success-msg {
+    display: none;
+    background: rgba(123,143,106,0.08);
+    border: 1px solid rgba(123,143,106,0.2);
+    border-radius: 14px;
+    padding: 16px;
+    font-size: 15px;
+    font-weight: 500;
+    color: #5E7A4E;
+    text-align: center;
+    animation: fadeUp 0.4s ease;
+  }
+
+  .proof {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .avatars {
+    display: flex;
+    align-items: center;
+  }
+  .av {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    border: 2.5px solid var(--bg);
+    margin-left: -7px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+  }
+  .av:first-child { margin-left: 0; }
+  .av-1 { background: linear-gradient(135deg, #D4637A, #C2185B); }
+  .av-2 { background: linear-gradient(135deg, #7E5A7E, #A87CA8); }
+  .av-3 { background: linear-gradient(135deg, #6A8FA8, #8BB0C4); }
+  .av-4 { background: linear-gradient(135deg, #D4A76A, #E8C590); }
+  .av-5 { background: linear-gradient(135deg, #7B8F6A, #9AB088); }
+
+  .proof-text {
+    font-size: 0.78rem;
+    color: var(--text-light);
+    font-weight: 500;
+  }
+  .proof-text strong {
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .scroll-hint {
+    margin-top: 2rem;
+    font-size: 0.72rem;
+    color: var(--text-light);
+    animation: float-slow 2.5s ease-in-out infinite;
+  }
+
+  /* ═══ MATCH EXAMPLES ═══ */
+  .matches-section {
+    padding: 2.5rem 1.5rem 2rem;
+  }
+
+  .stag {
+    display: inline-block;
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    background: var(--accent-bg);
+    padding: 0.3rem 0.7rem;
+    border-radius: 6px;
+    margin-bottom: 0.75rem;
+  }
+
+  .matches-section h2 {
+    font-family: var(--display);
+    font-size: 1.8rem;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+  }
+
+  .matches-section .sub {
+    font-size: 0.92rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+  }
+
+  .match-scroll {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    margin: 0 -1.5rem;
+    padding: 0 1.5rem 12px;
+  }
+  .match-scroll::-webkit-scrollbar { display: none; }
+
+  .match-card {
+    flex: 0 0 280px;
+    scroll-snap-align: start;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 20px;
+    padding: 1.25rem;
+    box-shadow: var(--card-shadow);
+    transition: transform 0.2s;
+  }
+  .match-card:active { transform: scale(0.98); }
+
+  .match-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+  .match-avatar {
+    width: 48px; height: 48px;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+  }
+  .match-name { font-weight: 700; font-size: 1rem; }
+  .match-meta { font-size: 0.75rem; color: var(--text-light); margin-top: 1px; }
+  .match-score { margin-left: auto; font-size: 1.35rem; font-weight: 800; color: var(--accent); }
+
+  .match-reason {
+    background: var(--accent-bg);
+    border: 1px solid var(--accent-border);
+    border-radius: 12px;
+    padding: 0.8rem;
+    margin-bottom: 0.75rem;
+  }
+  .match-reason-label {
+    font-size: 0.62rem;
+    font-weight: 700;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.3rem;
+  }
+  .match-reason-text {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.45;
+  }
+
+  .match-shared { display: flex; gap: 6px; flex-wrap: wrap; }
+  .shared-tag {
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    background: rgba(0,0,0,0.04);
+    border-radius: 8px;
+    padding: 0.3rem 0.55rem;
+  }
+
+  /* ═══ STATS ═══ */
+  .stats-strip {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    padding: 1.75rem 1.5rem;
+    background: var(--bg-warm);
+    border-top: 1px solid var(--card-border);
+    border-bottom: 1px solid var(--card-border);
+  }
+  .stat-item { text-align: center; }
+  .stat-num { font-size: 1.5rem; font-weight: 800; color: var(--accent); }
+  .stat-label { font-size: 0.68rem; color: var(--text-light); margin-top: 2px; max-width: 80px; }
+
+  /* ═══ HOW IT WORKS ═══ */
+  .how-section {
+    padding: 2rem 1.5rem 2.5rem;
+  }
+
+  .how-section h2 {
+    font-family: var(--display);
+    font-size: 1.8rem;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+  }
+
+  .step {
+    display: flex;
+    gap: 0.9rem;
+    align-items: flex-start;
+    margin-bottom: 1.25rem;
+  }
+
+  .step-num {
+    width: 40px; height: 40px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+    color: white;
+  }
+  .sn-1 { background: linear-gradient(135deg, #6A8FA8, #8BB0C4); }
+  .sn-2 { background: linear-gradient(135deg, #7E5A7E, #A87CA8); }
+  .sn-3 { background: linear-gradient(135deg, #C2185B, #D4637A); }
+  .sn-4 { background: linear-gradient(135deg, #7B8F6A, #9AB088); }
+
+  .step-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.15rem; color: var(--text); }
+  .step-desc { font-size: 0.84rem; color: var(--text-secondary); line-height: 1.5; }
+
+  /* ═══ TESTIMONIALS ═══ */
+  .testimonials {
+    padding: 2.5rem 1.5rem;
+  }
+
+  .testimonials h2 {
+    font-family: var(--display);
+    font-size: 1.8rem;
+    font-style: italic;
+    font-weight: 400;
+    margin-bottom: 1.25rem;
+  }
+
+  .quote-scroll {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    margin: 0 -1.5rem;
+    padding: 0 1.5rem 8px;
+  }
+  .quote-scroll::-webkit-scrollbar { display: none; }
+
+  .quote-card {
+    flex: 0 0 270px;
+    scroll-snap-align: start;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 18px;
+    padding: 1.15rem;
+    box-shadow: var(--card-shadow);
+  }
+  .quote-text {
+    font-size: 0.88rem;
+    color: var(--text);
+    line-height: 1.55;
+    margin-bottom: 0.75rem;
+    font-style: italic;
+  }
+  .quote-author { display: flex; align-items: center; gap: 0.5rem; }
+  .quote-av {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+  }
+  .quote-name { font-size: 0.78rem; font-weight: 600; color: var(--text); }
+  .quote-detail { font-size: 0.68rem; color: var(--text-light); }
+
+  /* ═══ BOTTOM CTA ═══ */
+  .bottom-cta {
+    padding: 2.5rem 1.5rem 3rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .bottom-cta::before {
+    content: '';
+    position: absolute;
+    top: -40px; left: 50%; transform: translateX(-50%);
+    width: 300px; height: 300px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(194,24,91,0.05) 0%, transparent 70%);
+    filter: blur(40px);
+    pointer-events: none;
+  }
+  .bottom-cta h2 {
+    font-family: var(--display);
+    font-size: 1.7rem;
+    font-style: italic;
+    font-weight: 400;
+    margin-bottom: 0.5rem;
+    position: relative;
+  }
+  .bottom-cta .sub {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    position: relative;
+  }
+
+  footer {
+    text-align: center;
+    padding: 1.5rem;
+    border-top: 1px solid var(--card-border);
+    font-size: 0.65rem;
+    color: var(--text-light);
+  }
+  footer a { color: var(--text-secondary); text-decoration: none; }
+
+  @media (min-width: 640px) {
+    .hero { padding: 4rem 2rem; }
+    .hero h1 { font-size: 3.2rem; }
+    .form-wrap { max-width: 400px; }
+    .matches-section, .how-section, .testimonials, .bottom-cta {
+      max-width: 540px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .stats-strip { gap: 3rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+
+  <div class="logo f f1">◀</div>
+  <h1 class="f f2">Find someone who <em>really</em> sees you</h1>
+  <p class="tagline f f3">Rewind matches you with people who love the same things you do — based on your YouTube likes. Real connection starts here.</p>
+
+  <div class="form-wrap f f4" id="hero-form">
+    <input class="email-input" type="email" id="hero-email" placeholder="Enter your email" inputmode="email" autocomplete="email" required>
+    <button class="cta-btn" onclick="submitForm('hero')">Join the Waitlist — It's Free</button>
+  </div>
+  <div class="success-msg" id="hero-success">💌 You're in! We'll let you know when Rewind launches.</div>
+
+  <div class="proof f f5">
+    <div class="avatars">
+      <div class="av av-1">👩‍🍳</div>
+      <div class="av av-2">🎧</div>
+      <div class="av av-3">🏋️</div>
+      <div class="av av-4">🎨</div>
+      <div class="av av-5">🌍</div>
+    </div>
+    <div class="proof-text"><strong>2,847</strong> people already signed up</div>
+  </div>
+
+  <div class="scroll-hint f f6">See how it works ↓</div>
+</section>
+
+<!-- ═══ MATCH EXAMPLES ═══ -->
+<section class="matches-section">
+  <div class="stag">Why it works</div>
+  <h2>Connections that feel like they were meant to be</h2>
+  <p class="sub">Not based on a selfie. Based on what makes you <em>you</em>.</p>
+
+  <div class="match-scroll">
+    <div class="match-card">
+      <div class="match-header">
+        <div class="match-avatar" style="background: linear-gradient(135deg, #D4A76A, #E8C590);">👩‍🍳</div>
+        <div>
+          <div class="match-name">Sarah, 26</div>
+          <div class="match-meta">2 miles away</div>
+        </div>
+        <div class="match-score">94%</div>
+      </div>
+      <div class="match-reason">
+        <div class="match-reason-label">✦ You both liked</div>
+        <div class="match-reason-text">The same Gordon Ramsay scrambled eggs tutorial and a deep dive on why MSG isn't actually bad</div>
+      </div>
+      <div class="match-shared">
+        <div class="shared-tag">🍳 cooking</div>
+        <div class="shared-tag">✈️ travel food</div>
+        <div class="shared-tag">🧪 food science</div>
+      </div>
+    </div>
+
+    <div class="match-card">
+      <div class="match-header">
+        <div class="match-avatar" style="background: linear-gradient(135deg, #6A8FA8, #8BB0C4);">🏋️</div>
+        <div>
+          <div class="match-name">Marcus, 28</div>
+          <div class="match-meta">5 miles away</div>
+        </div>
+        <div class="match-score">89%</div>
+      </div>
+      <div class="match-reason">
+        <div class="match-reason-label">✦ You both liked</div>
+        <div class="match-reason-text">A 30-min breakdown of the perfect morning routine and that one Jeff Nippard video everyone shares</div>
+      </div>
+      <div class="match-shared">
+        <div class="shared-tag">💪 fitness</div>
+        <div class="shared-tag">🎵 hip-hop</div>
+        <div class="shared-tag">📈 productivity</div>
+      </div>
+    </div>
+
+    <div class="match-card">
+      <div class="match-header">
+        <div class="match-avatar" style="background: linear-gradient(135deg, #7B8F6A, #9AB088);">🌍</div>
+        <div>
+          <div class="match-name">Jess, 25</div>
+          <div class="match-meta">1 mile away</div>
+        </div>
+        <div class="match-score">92%</div>
+      </div>
+      <div class="match-reason">
+        <div class="match-reason-label">✦ You both liked</div>
+        <div class="match-reason-text">An obscure vlog about train travel through Japan and a cozy cabin tour in Norway</div>
+      </div>
+      <div class="match-shared">
+        <div class="shared-tag">🌿 nature</div>
+        <div class="shared-tag">✈️ travel vlogs</div>
+        <div class="shared-tag">☕ cozy content</div>
+      </div>
+    </div>
+
+    <div class="match-card">
+      <div class="match-header">
+        <div class="match-avatar" style="background: linear-gradient(135deg, #7E5A7E, #A87CA8);">😂</div>
+        <div>
+          <div class="match-name">Alex, 27</div>
+          <div class="match-meta">3 miles away</div>
+        </div>
+        <div class="match-score">91%</div>
+      </div>
+      <div class="match-reason">
+        <div class="match-reason-label">✦ You both liked</div>
+        <div class="match-reason-text">The same niche comedy sketch channel and a video essay about why The Office UK is better</div>
+      </div>
+      <div class="match-shared">
+        <div class="shared-tag">😂 comedy</div>
+        <div class="shared-tag">📺 TV analysis</div>
+        <div class="shared-tag">🎙️ podcasts</div>
+      </div>
+    </div>
+
+    <div class="match-card">
+      <div class="match-header">
+        <div class="match-avatar" style="background: linear-gradient(135deg, #C2185B, #D4637A);">🎧</div>
+        <div>
+          <div class="match-name">Rio, 24</div>
+          <div class="match-meta">4 miles away</div>
+        </div>
+        <div class="match-score">88%</div>
+      </div>
+      <div class="match-reason">
+        <div class="match-reason-label">✦ You both liked</div>
+        <div class="match-reason-text">A tiny desk concert from 2022 and a video about how lo-fi beats are actually made</div>
+      </div>
+      <div class="match-shared">
+        <div class="shared-tag">🎵 indie music</div>
+        <div class="shared-tag">🎨 design</div>
+        <div class="shared-tag">🌙 lo-fi</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ STATS ═══ -->
+<div class="stats-strip">
+  <div class="stat-item">
+    <div class="stat-num">94%</div>
+    <div class="stat-label">say matches feel natural</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">4.2×</div>
+    <div class="stat-label">more likely to message</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">847</div>
+    <div class="stat-label">avg shared likes per match</div>
+  </div>
+</div>
+
+<!-- ═══ HOW IT WORKS ═══ -->
+<section class="how-section">
+  <div class="stag">How it works</div>
+  <h2>Let your heart do the swiping</h2>
+
+  <div class="step">
+    <div class="step-num sn-1">1</div>
+    <div>
+      <div class="step-title">Connect your YouTube</div>
+      <div class="step-desc">Sign in with Google. We only read your likes — we never post or change anything.</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num sn-2">2</div>
+    <div>
+      <div class="step-title">We learn your taste</div>
+      <div class="step-desc">Your liked videos become your dating profile. Cooking, fitness, comedy, music — all of it.</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num sn-3">3</div>
+    <div>
+      <div class="step-title">Get matched with real compatibility</div>
+      <div class="step-desc">We find people who like the same stuff. The more niche the overlap, the stronger the match.</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num sn-4">4</div>
+    <div>
+      <div class="step-title">Start talking about what you share</div>
+      <div class="step-desc">Every chat starts with the video that connected you. No more "hey what's up".</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TESTIMONIALS ═══ -->
+<section class="testimonials">
+  <div class="stag">Love stories starting</div>
+  <h2>It's already happening</h2>
+
+  <div class="quote-scroll">
+    <div class="quote-card">
+      <div class="quote-text">"Finally someone figured out that my YouTube likes say more about me than any bio I could write"</div>
+      <div class="quote-author">
+        <div class="quote-av" style="background: linear-gradient(135deg, #D4A76A, #E8C590);">😊</div>
+        <div>
+          <div class="quote-name">Taylor</div>
+          <div class="quote-detail">Waitlist member</div>
+        </div>
+      </div>
+    </div>
+    <div class="quote-card">
+      <div class="quote-text">"I matched with someone who liked the same weird cooking video and now we cook together every week"</div>
+      <div class="quote-author">
+        <div class="quote-av" style="background: linear-gradient(135deg, #7B8F6A, #9AB088);">🥰</div>
+        <div>
+          <div class="quote-name">Jordan</div>
+          <div class="quote-detail">Beta tester</div>
+        </div>
+      </div>
+    </div>
+    <div class="quote-card">
+      <div class="quote-text">"Way better than swiping on photos. We already had stuff to talk about from day one"</div>
+      <div class="quote-author">
+        <div class="quote-av" style="background: linear-gradient(135deg, #7E5A7E, #A87CA8);">✨</div>
+        <div>
+          <div class="quote-name">Priya</div>
+          <div class="quote-detail">Beta tester</div>
+        </div>
+      </div>
+    </div>
+    <div class="quote-card">
+      <div class="quote-text">"The icebreakers are genius. 'We both liked this video' is 100x better than any pickup line"</div>
+      <div class="quote-author">
+        <div class="quote-av" style="background: linear-gradient(135deg, #6A8FA8, #8BB0C4);">💯</div>
+        <div>
+          <div class="quote-name">Chris</div>
+          <div class="quote-detail">Waitlist member</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ BOTTOM CTA ═══ -->
+<section class="bottom-cta">
+  <h2>Ready to meet your person?</h2>
+  <p class="sub">Real connection is closer than you think.</p>
+
+  <div class="form-wrap" id="bottom-form" style="margin: 0 auto;">
+    <input class="email-input" type="email" id="bottom-email" placeholder="Enter your email" inputmode="email" autocomplete="email" required>
+    <button class="cta-btn" onclick="submitForm('bottom')">Join the Waitlist — It's Free</button>
+  </div>
+  <div class="success-msg" id="bottom-success">💌 You're in! We'll let you know when Rewind launches.</div>
+</section>
+
+<footer>
+  <p>© 2026 Rewind · <a href="#">Privacy</a> · <a href="#">Terms</a> · <a href="#">@rewind.dating</a></p>
+</footer>
+
+<script>
+function submitForm(loc) {
+  const email = document.getElementById(loc + '-email').value;
+  if (!email || !email.includes('@')) {
+    const el = document.getElementById(loc + '-email');
+    el.style.borderColor = 'var(--accent)';
+    el.style.boxShadow = '0 0 0 3px rgba(194,24,91,0.1)';
+    return;
+  }
+  document.getElementById(loc + '-form').style.display = 'none';
+  document.getElementById(loc + '-success').style.display = 'block';
+  console.log('Waitlist:', email, 'source: ig_' + loc);
+  // fbq('track', 'Lead', { content_name: 'waitlist_ig' });
+}
+
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.animation = 'fadeUp 0.5s ease both';
+      obs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.match-card, .step, .quote-card, .stat-item').forEach(el => {
+  el.style.opacity = '0';
+  obs.observe(el);
+});
+</script>
+</body>
+</html>
