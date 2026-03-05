@@ -778,7 +778,13 @@ function submitForm(loc) {
   }
   document.getElementById(loc + '-form').style.display = 'none';
   document.getElementById(loc + '-success').style.display = 'block';
-  console.log('Waitlist:', email, 'source: ig_' + loc);
+
+  fetch('https://formspree.io/f/mnjgajvg', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email: email, source: 'instagram_' + loc })
+  });
+
   // fbq('track', 'Lead', { content_name: 'waitlist_ig' });
 }
 
